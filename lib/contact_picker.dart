@@ -49,11 +49,11 @@ class Contact {
   /// The full name of the contact, e.g. "Dr. Daniel Higgens Jr.".
   String fullName;
 
-  /// The phone numbers of the contact.
+ /// The phone numbers of the contact.
   Iterable<PhoneNumber> phones;
 
   /// The emails of the contact.
-  Iterable<Email> emails;
+  Iterable<Email> emails = [];
 
   /// The addresses of the contact.
   Iterable<PostalAddress> postalAddresses;
@@ -72,17 +72,15 @@ class Contact {
     suffix = m["suffix"];
     company = m["company"];
     jobTitle = m["jobTitle"];
-    emails = (m["emails"])?.map((dynamic m) => new Email.fromMap(m));
-    phones = (m["phones"])?.map((dynamic m) => new PhoneNumber.fromMap(m));
-    postalAddresses = (m["postalAddresses"])
-        ?.map((dynamic m) => new PostalAddress.fromMap(m));
-    ims = (m["ims"])?.map((dynamic m) => new Im.fromMap(m));
+    emails = (m["emails"] as Iterable)?.map((dynamic m) => new Email.fromMap(m));;
+    phones = (m["phones"] as Iterable)?.map((dynamic m) => new PhoneNumber.fromMap(m));
+    ims = (m["ims"] as Iterable)?.map((dynamic m) => new Im.fromMap(m));
+    postalAddresses = (m["postalAddresses"] as Iterable)?.map((dynamic m) => new PostalAddress.fromMap(m));
     avatar = m["avatar"];
   }
 
   @override
-  String toString() =>
-      '$fullName: ${phones} ${emails} ${postalAddresses}';
+  String toString() => '$fullName';
 }
 
 class PostalAddress {
@@ -95,18 +93,41 @@ class PostalAddress {
       this.postcode,
       this.region,
       this.country});
-  String pobox, neighborhood, label, street, city, postcode, region, country;
 
-  PostalAddress.fromMap(Map<dynamic, dynamic> m) {
-    label = m["label"];
-    street = m["street"];
-    city = m["city"];
-    postcode = m["postcode"];
-    region = m["region"];
-    country = m["country"];
-    pobox = m['pobox'];
-    neighborhood = m['neighborhood'];
-  }
+    factory PostalAddress.fromMap(Map<dynamic, dynamic> m) =>
+      new PostalAddress(
+    label: m["label"],
+    street: m["street"],
+    city: m["city"],
+    postcode: m["postcode"],
+    region: m["region"],
+    country: m["country"],
+    pobox: m['pobox'],
+    neighborhood: m['neighborhood']);
+
+
+ // String pobox, neighborhood, label, street, city, postcode, region, country;
+  /// Address
+  final String pobox;
+
+  /// The label associated with the phone number, e.g. "home" or "work".
+  final String label;
+      /// Address
+  final String neighborhood;
+    /// Address
+  final String street;
+    /// Address
+  final String city;
+    /// Address
+  final String postcode;
+    /// Address
+  final String region;
+      /// Address
+  final String country;
+  
+
+  @override
+  String toString() => '$street $city $region $postcode ($label)';
 }
 
 /// Represents a phone number selected by the user.
