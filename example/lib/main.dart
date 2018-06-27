@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initPermissions() async {
-    final granted =
+    final bool granted =
         await SimplePermissions.checkPermission(Permission.ReadContacts);
     setState(() {
       _hasPermissions = granted;
@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _requestPermissions() async {
-    final granted =
+    final bool granted =
         await SimplePermissions.requestPermission(Permission.ReadContacts);
     setState(() {
       _hasPermissions = granted;
@@ -57,30 +57,30 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               !_hasPermissions
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 32.0),
-                      child: MaterialButton(
-                        onPressed: _requestPermissions,
-                        color: Colors.amber,
-                        child: Text(
-                          "Request permissions",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
+                  ? new RaisedButton(
+                      child: const Text("Request permissions"),
+                      onPressed: _requestPermissions,
+                      color: Colors.amber,
                     )
-                  : Container(),
-              new MaterialButton(
-                color: Colors.blue,
+                  : new Container(),
+              new Container(
+                height: 20.0,
+              ),
+              new RaisedButton(
                 child: const Text(
-                  "CLICK ME",
-                  style: TextStyle(color: Colors.white),
+                  "Select Contact",
+                  style: const TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  Contact contact = await _contactPicker.selectContact();
+                  final Contact contact = await _contactPicker.selectContact();
                   setState(() {
                     _contact = contact;
                   });
                 },
+                color: Colors.blue,
+              ),
+              new Container(
+                height: 20.0,
               ),
               new Text(
                 _contact == null ? 'No contact selected.' : _contact.toString(),

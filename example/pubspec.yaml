@@ -2,9 +2,7 @@ name: contact_picker_example
 description: Demonstrates how to use the contact_picker plugin.
 
 dependencies:
-  # simple_permissions: ^0.1.5
-  simple_permissions:
-    path: ../../ened.flutter_simple_permissions
+  simple_permissions: ^0.1.5
   flutter:
     sdk: flutter
 

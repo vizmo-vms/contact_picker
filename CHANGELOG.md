@@ -1,3 +1,7 @@
+## v0.0.3
+
+* Adding Fields and Merging with contact_service
+
 ## v0.0.2
 
 * Fix crash when no contact is selected on Android

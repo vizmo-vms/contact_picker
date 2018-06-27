@@ -1,23 +1,10 @@
-// Copyright 2017 Michael Goderbauer. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
-
+import 'dart:typed_data';
 import 'package:flutter/services.dart';
 
-/// Entry point for the ContactPicker plugin.
-///
-/// Call [selectContact] to bring up a dialog where the user can pick a contact
-/// from his/her address book.
 class ContactPicker {
   static const MethodChannel _channel = const MethodChannel('contact_picker');
 
-  /// Brings up a dialog where the user can select a contact from his/her
-  /// address book.
-  ///
-  /// Returns the [Contact] selected by the user, or `null` if the user canceled
-  /// out of the dialog.
   Future<Contact> selectContact() async {
     final Map<dynamic, dynamic> result =
         await _channel.invokeMethod('selectContact');
@@ -28,43 +15,98 @@ class ContactPicker {
   }
 }
 
-/// Represents a contact selected by the user.
 class Contact {
   Contact(
       {this.fullName,
-      this.phoneNumbers,
+      this.givenName,
+      this.middleName,
+      this.prefix,
+      this.suffix,
+      this.familyName,
+      this.company,
+      this.jobTitle,
       this.emails,
-      this.addresses,
-      this.ims});
+      this.phones,
+      this.postalAddresses,
+      this.ims,
+      this.displayName,
+      this.identifier,
+      this.avatar});
 
-  factory Contact.fromMap(Map<dynamic, dynamic> map) => new Contact(
-        fullName: map['fullName'],
-        phoneNumbers: List<PhoneNumber>.from((map['phones'])
-            .map<PhoneNumber>((dynamic i) => PhoneNumber.fromMap(i))),
-        emails: List<Email>.from(
-            (map['emails']).map<Email>((dynamic i) => Email.fromMap(i))),
-        addresses: List<Address>.from(
-            (map['addresses']).map<Address>((dynamic i) => Address.fromMap(i))),
-        ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
-      );
+  String identifier;
+  String displayName;
+  String givenName;
+  String middleName;
+  String prefix;
+  String suffix;
+  String familyName;
+  String company;
+  String jobTitle;
+
+  // Avatar of Contact
+  Uint8List avatar;
 
   /// The full name of the contact, e.g. "Dr. Daniel Higgens Jr.".
-  final String fullName;
+  String fullName;
 
   /// The phone numbers of the contact.
-  final List<PhoneNumber> phoneNumbers;
+  Iterable<PhoneNumber> phones;
 
   /// The emails of the contact.
-  final List<Email> emails;
+  Iterable<Email> emails;
 
   /// The addresses of the contact.
-  final List<Address> addresses;
+  Iterable<PostalAddress> postalAddresses;
 
   /// The instant messengers of the contact
-  final List<Im> ims;
+  Iterable<Im> ims;
+
+  Contact.fromMap(Map<dynamic, dynamic> m) {
+    fullName = m['fullName'];
+    identifier = m["identifier"];
+    displayName = m["displayName"];
+    givenName = m["givenName"];
+    middleName = m["middleName"];
+    familyName = m["familyName"];
+    prefix = m["prefix"];
+    suffix = m["suffix"];
+    company = m["company"];
+    jobTitle = m["jobTitle"];
+    emails = (m["emails"])?.map((dynamic m) => new Email.fromMap(m));
+    phones = (m["phones"])?.map((dynamic m) => new PhoneNumber.fromMap(m));
+    postalAddresses = (m["postalAddresses"])
+        ?.map((dynamic m) => new PostalAddress.fromMap(m));
+    ims = (m["ims"])?.map((dynamic m) => new Im.fromMap(m));
+    avatar = m["avatar"];
+  }
 
   @override
-  String toString() => '$fullName: $phoneNumbers $emails $addresses $ims';
+  String toString() =>
+      '$fullName: ${phones} ${emails} ${postalAddresses}';
+}
+
+class PostalAddress {
+  PostalAddress(
+      {this.pobox,
+      this.neighborhood,
+      this.label,
+      this.street,
+      this.city,
+      this.postcode,
+      this.region,
+      this.country});
+  String pobox, neighborhood, label, street, city, postcode, region, country;
+
+  PostalAddress.fromMap(Map<dynamic, dynamic> m) {
+    label = m["label"];
+    street = m["street"];
+    city = m["city"];
+    postcode = m["postcode"];
+    region = m["region"];
+    country = m["country"];
+    pobox = m['pobox'];
+    neighborhood = m['neighborhood'];
+  }
 }
 
 /// Represents a phone number selected by the user.
@@ -82,52 +124,6 @@ class PhoneNumber {
 
   @override
   String toString() => '$number ($label)';
-}
-
-/// Represents a phone number selected by the user.
-class Address {
-  Address(
-      {this.street,
-      this.pobox,
-      this.neighborhood,
-      this.city,
-      this.region,
-      this.country,
-      this.label});
-
-  factory Address.fromMap(Map<dynamic, dynamic> map) => new Address(
-      street: map['street'],
-      pobox: map['pobox'],
-      neighborhood: map['neighborhood'],
-      city: map['city'],
-      region: map['region'],
-      country: map['country'],
-      label: map['label']);
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String street;
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String pobox;
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String neighborhood;
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String city;
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String region;
-
-  /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String country;
-
-  /// The label associated with the phone number, e.g. "home" or "work".
-  final String label;
-
-  @override
-  String toString() =>
-      '$street $pobox $neighborhood $city $region $country ($label)';
 }
 
 /// Represents a email address
