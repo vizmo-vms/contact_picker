@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package net.goderbauer.flutter.contactpicker;
+package com.appleeducate.flutter.contactpicker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -89,6 +89,15 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
       List<Map<String, Object>> phones = new ArrayList<>();
       List<Map<String, Object>> addresses = new ArrayList<>();
 
+      String displayName = "";
+      String givenName = "";
+      String middleName = "";
+      String familyName = "";
+      String prefix = "";
+      String suffix = "";
+      String company = "";
+      String jobTitle = "";
+
       Cursor rawCursor = null;
       try {
         rawCursor = activity.getContentResolver()
@@ -100,6 +109,20 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
 
             String mimeType = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.RawContactsEntity.MIMETYPE));
             switch (mimeType) {
+              case ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE: {
+                displayName = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
+                givenName = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                middleName = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
+                familyName = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+                prefix = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PREFIX));
+                suffix = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.SUFFIX));
+                break;
+              }
+              case ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE: {
+                company = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
+                jobTitle = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
+                break;
+              }
               case ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE: {
                 int type = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
                 String customLabel = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.LABEL));
@@ -160,9 +183,21 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
       }
 
       String fullName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+      //String identifier = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID));
+      // String avatar = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
 
       HashMap<String, Object> contact = new HashMap<>();
       contact.put("fullName", fullName);
+      contact.put("identifier", "");
+      contact.put("displayName", displayName);
+      contact.put("givenName", givenName);
+      contact.put("middleName", middleName);
+      contact.put("familyName", familyName);
+      contact.put("prefix", prefix);
+      contact.put("suffix", suffix);
+      contact.put("company", company);
+      contact.put("jobTitle", jobTitle);
+      // contact.put("avatar", avatar);
 
       contact.put("emails", emails);
       contact.put("phones", phones);
@@ -178,5 +213,4 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
     }
     return true;
   }
-
 }

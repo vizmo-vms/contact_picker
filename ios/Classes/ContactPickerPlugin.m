@@ -3,24 +3,16 @@
 // found in the LICENSE file.
 
 #import "ContactPickerPlugin.h"
-#import <contact_picker/contact_picker-Swift.h>
 @import ContactsUI;
 
 @interface ContactPickerPlugin ()<CNContactPickerDelegate>
 @end
 
-//@implementation ContactPickerPlugin {
-//  FlutterResult _result;
-//}
-//+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-////  [SwiftContactPickerPlugin registerWithRegistrar:registrar];
-//}
 @implementation ContactPickerPlugin {
   FlutterResult _result;
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
-  [SwiftContactPickerPlugin registerWithRegistrar:registrar];
   FlutterMethodChannel *channel =
   [FlutterMethodChannel methodChannelWithName:@"contact_picker"
                               binaryMessenger:[registrar messenger]];

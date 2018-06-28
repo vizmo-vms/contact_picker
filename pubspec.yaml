@@ -8,7 +8,7 @@ homepage: https://github.com/appleeducate/contact_picker
 
 flutter:
   plugin:
-    androidPackage: net.appleeducate.flutter.contactpicker
+    androidPackage: com.appleeducate.flutter.contactpicker
     pluginClass: ContactPickerPlugin
 
 dependencies:
