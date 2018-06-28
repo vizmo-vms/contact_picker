@@ -1,3 +1,7 @@
+## v0.0.4
+
+* Adding Fields from contact_service
+
 ## v0.0.3
 
 * Adding Fields and Merging with contact_service
