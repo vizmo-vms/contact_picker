@@ -42,56 +42,58 @@ class _MyAppState extends State<MyApp> {
 
   void _updateContactInfo(Contact c) {
     if (c != null) {
-      // print(_contact.toString());
-
       //Name
       String _firstName = "";
       String _middleName = "";
       String _lastName = "";
-      _firstName = _contact.givenName.toString();
-      _middleName = _contact.middleName.toString();
-      _lastName = _contact.familyName.toString();
+      try {
+        _firstName = c.givenName.toString();
+        _middleName = c.middleName.toString();
+        _lastName = c.familyName.toString();
+      } catch (e) {}
+      print(
+          "Name => ${c.fullName}\nFirst: ${c.givenName}\nMiddle: ${c.middleName}\nLast: ${c.familyName}");
 
-      // //Phone Numbers
-      // String _home = "";
-      // String _cell = "";
-      // String _office = "";
-      // Iterable<PhoneNumber> _numbers = _contact.phones.toList();
-      // for (var item in _numbers) {
-      //   if (item.label.contains('home')) {
-      //     _home = item.number.toString();
-      //   } else if (item.label.contains('mobile')) {
-      //     _cell = item.number.toString();
-      //   } else if (item.label.contains('work')) {
-      //     _office = item.number.toString();
-      //   } else {
-      //     _cell = item.number.toString();
-      //   }
-      // }
+      //Phone Numbers
+      String _home = "";
+      String _cell = "";
+      String _office = "";
+      for (PhoneNumber item in c.phones) {
+        if (item.label.contains('home')) {
+          _home = item.number.toString();
+        } else if (item.label.contains('mobile')) {
+          _cell = item.number.toString();
+        } else if (item.label.contains('work')) {
+          _office = item.number.toString();
+        } else {
+          _cell = item.number.toString();
+        }
+      }
+      print("Phones\nHome: $_home\nOffice: $_office\nCell: $_cell");
 
       //Email
       String _email = "";
       try {
-        _email = _contact.emails?.first?.email.toString();
-        // print("Email: $_email\n ");
-      } catch (e) {
-        // print(e);
-      }
+        if (c.emails != null && c.emails.length > 0) {
+          _email = c.emails.first.email.toString();
+          print("Email: $_email\n ");
+        }
+      } catch (e) {}
 
       //Address Info
       String _street = "";
       String _city = "";
       String _state = "";
       String _zip = "";
-      try {
-      _street = _contact.postalAddresses?.first?.street.toString();
-      _city = _contact.postalAddresses?.first?.city.toString();
-      _state = _contact.postalAddresses?.first?.region.toString();
-      _zip = _contact.postalAddresses?.first?.postcode.toString();
-      } catch (e) {
-        // print(e);
+
+      if (c.postalAddresses != null && c.postalAddresses.length > 0) {
+        _street = c.postalAddresses.first.street.toString();
+        _city = c.postalAddresses.first.city.toString();
+        _state = c.postalAddresses.first.region.toString();
+        _zip = c.postalAddresses.first.postcode.toString();
+        print("Address: $_street $_city, $_state $_zip\n");
       }
-     
+      
     } else {
       print("No Contact Selected");
     }
@@ -135,9 +137,9 @@ class _MyAppState extends State<MyApp> {
               new Container(
                 height: 20.0,
               ),
-              // new Text(
-              //   // _contact == null ? 'No contact selected.' : _contact.toString(),
-              // ),
+              new Text(
+                _contact == null ? 'No contact selected.' : _contact.toString(),
+              ),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class ContactPicker {
   static const MethodChannel _channel = const MethodChannel('contact_picker');
@@ -18,66 +19,86 @@ class ContactPicker {
 class Contact {
   Contact(
       {this.fullName,
+      this.identifier,
+      this.displayName,
       this.givenName,
       this.middleName,
+      this.familyName,
       this.prefix,
       this.suffix,
-      this.familyName,
       this.company,
       this.jobTitle,
-      this.emails,
+      this.avatar,
       this.phones,
+      this.emails,
       this.postalAddresses,
-      this.ims,
-      this.displayName,
-      this.identifier,
-      this.avatar});
+      this.ims});
 
-  String identifier;
-  String displayName;
-  String givenName;
-  String middleName;
-  String prefix;
-  String suffix;
-  String familyName;
-  String company;
-  String jobTitle;
+  factory Contact.fromMap(Map<dynamic, dynamic> map) => new Contact(
+        fullName: map['fullName'],
+        identifier: map['identifier'],
+        displayName: map['displayName'],
+        givenName: map['givenName'],
+        middleName: map['middleName'],
+        familyName: map['familyName'],
+        prefix: map['prefix'],
+        suffix: map['suffix'],
+        company: map['company'],
+        jobTitle: map['jobTitle'],
+        avatar: map['avatar'],
+        phones: List<PhoneNumber>.from((map['phones'])
+            .map<PhoneNumber>((dynamic i) => PhoneNumber.fromMap(i))),
+        emails: List<Email>.from(
+            (map['emails']).map<Email>((dynamic i) => Email.fromMap(i))),
+        postalAddresses: List<PostalAddress>.from((map['addresses'])
+            .map<PostalAddress>((dynamic i) => PostalAddress.fromMap(i))),
+        ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
+      );
 
-  // Avatar of Contact
-  Uint8List avatar;
+  /// Identifer
+  final String identifier;
+
+  /// Name for Contact
+  final String displayName;
+
+  /// First Name
+  final String givenName;
+
+  /// Middle Name
+  final String middleName;
+
+  /// Mr. Mrs. Ms. Miss. Dr.
+  final String prefix;
+
+  /// Sr. Jr. M.D.
+  final String suffix;
+
+  /// Last Name
+  final String familyName;
+
+  /// Company
+  final String company;
+
+  /// Job Title
+  final String jobTitle;
+
+  /// Avatar of Contact
+  final Uint8List avatar;
 
   /// The full name of the contact, e.g. "Dr. Daniel Higgens Jr.".
-  String fullName;
+  final String fullName;
 
- /// The phone numbers of the contact.
-  Iterable<PhoneNumber> phones;
+  /// The phone numbers of the contact.
+  final List<PhoneNumber> phones;
 
   /// The emails of the contact.
-  Iterable<Email> emails = [];
+  final List<Email> emails;
 
   /// The addresses of the contact.
-  Iterable<PostalAddress> postalAddresses;
+  final List<PostalAddress> postalAddresses;
 
   /// The instant messengers of the contact
-  Iterable<Im> ims;
-
-  Contact.fromMap(Map<dynamic, dynamic> m) {
-    fullName = m['fullName'];
-    identifier = m["identifier"];
-    displayName = m["displayName"];
-    givenName = m["givenName"];
-    middleName = m["middleName"];
-    familyName = m["familyName"];
-    prefix = m["prefix"];
-    suffix = m["suffix"];
-    company = m["company"];
-    jobTitle = m["jobTitle"];
-    emails = (m["emails"] as Iterable)?.map((dynamic m) => new Email.fromMap(m));;
-    phones = (m["phones"] as Iterable)?.map((dynamic m) => new PhoneNumber.fromMap(m));
-    ims = (m["ims"] as Iterable)?.map((dynamic m) => new Im.fromMap(m));
-    postalAddresses = (m["postalAddresses"] as Iterable)?.map((dynamic m) => new PostalAddress.fromMap(m));
-    avatar = m["avatar"];
-  }
+  final List<Im> ims;
 
   @override
   String toString() => '$fullName';
@@ -94,37 +115,41 @@ class PostalAddress {
       this.region,
       this.country});
 
-    factory PostalAddress.fromMap(Map<dynamic, dynamic> m) =>
-      new PostalAddress(
-    label: m["label"],
-    street: m["street"],
-    city: m["city"],
-    postcode: m["postcode"],
-    region: m["region"],
-    country: m["country"],
-    pobox: m['pobox'],
-    neighborhood: m['neighborhood']);
+  factory PostalAddress.fromMap(Map<dynamic, dynamic> m) => new PostalAddress(
+      label: m["label"],
+      street: m["street"],
+      city: m["city"],
+      postcode: m["postcode"],
+      region: m["region"],
+      country: m["country"],
+      pobox: m['pobox'],
+      neighborhood: m['neighborhood']);
 
+  // String pobox, neighborhood, label, street, city, postcode, region, country;
 
- // String pobox, neighborhood, label, street, city, postcode, region, country;
   /// Address
   final String pobox;
 
   /// The label associated with the phone number, e.g. "home" or "work".
   final String label;
-      /// Address
+
+  /// Address
   final String neighborhood;
-    /// Address
+
+  /// Address
   final String street;
-    /// Address
+
+  /// Address
   final String city;
-    /// Address
+
+  /// Address
   final String postcode;
-    /// Address
+
+  /// Address
   final String region;
-      /// Address
+
+  /// Address
   final String country;
-  
 
   @override
   String toString() => '$street $city $region $postcode ($label)';
