@@ -71,12 +71,12 @@
                          @"phone": phone.value.stringValue }];
   }
 
-  for (CNLabeledValue<CNInstantMessageAddress*> * im in contact.instantMessageAddresses) {
-    [ims addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: im.label],
-                      @"im": im.value.username,
-                      @"protocol": im.value.service
-                      }];
-  }
+  // for (CNLabeledValue<CNInstantMessageAddress*> * im in contact.instantMessageAddresses) {
+  //   [ims addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: im.label],
+  //                     @"im": im.value.username,
+  //                     @"protocol": im.value.service
+  //                     }];
+  // }
   for (CNLabeledValue<CNPostalAddress*> * address in contact.postalAddresses) {
     if (@available(iOS 10.3, *)) {
       [addresses addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: address.label],
@@ -106,7 +106,7 @@
     fullName = [phones.firstObject valueForKeyPath:@"phone"];
   }
 
-  _result(@{ @"fullName": fullName, @"identifier": identifier, @"displayName": displayName, @"givenName": givenName, @"middleName": middleName, @"familyName": familyName, @"prefix": prefix, @"suffix": suffix, @"company": company, @"jobTitle": jobTitle, @"emails": emails, @"phones": phones, @"addresses": addresses, @"ims": ims });
+  _result(@{ @"fullName": fullName, @"identifier": identifier, @"displayName": displayName, @"givenName": givenName, @"middleName": middleName, @"familyName": familyName, @"prefix": prefix, @"suffix": suffix, @"company": company, @"jobTitle": jobTitle, @"emails": emails, @"phones": phones, @"addresses": addresses });
   _result = nil;
 
   NSLog(@"contact: %@", contact);

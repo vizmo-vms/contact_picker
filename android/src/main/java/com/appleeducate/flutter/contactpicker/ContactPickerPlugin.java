@@ -84,7 +84,7 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
 
       long contactId = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
 
-      List<Map<String, Object>> ims = new ArrayList<>();
+      // List<Map<String, Object>> ims = new ArrayList<>();
       List<Map<String, Object>> emails = new ArrayList<>();
       List<Map<String, Object>> phones = new ArrayList<>();
       List<Map<String, Object>> addresses = new ArrayList<>();
@@ -123,20 +123,20 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
                 jobTitle = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
                 break;
               }
-              case ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE: {
-                int type = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
-                String customLabel = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.LABEL));
+              // case ContactsContract.CommonDataKinds.Im.CONTENT_ITEM_TYPE: {
+              //   int type = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.TYPE));
+              //   String customLabel = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.LABEL));
 
-                row.put("label", ContactsContract.CommonDataKinds.Im.getTypeLabel(activity.getResources(), type, customLabel));
-                row.put("im", rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
+              //   row.put("label", ContactsContract.CommonDataKinds.Im.getTypeLabel(activity.getResources(), type, customLabel));
+              //   row.put("im", rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.DATA)));
 
-                int protocol = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.PROTOCOL));
-                String customProtocol = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.CUSTOM_PROTOCOL));
-                row.put("protocol", ContactsContract.CommonDataKinds.Im.getProtocolLabel(activity.getResources(), protocol, customProtocol));
+              //   int protocol = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.PROTOCOL));
+              //   String customProtocol = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Im.CUSTOM_PROTOCOL));
+              //   row.put("protocol", ContactsContract.CommonDataKinds.Im.getProtocolLabel(activity.getResources(), protocol, customProtocol));
 
-                ims.add(row);
-                break;
-              }
+              //   ims.add(row);
+              //   break;
+              // }
               case ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE: {
                 int type = rawCursor.getInt(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
                 String customLabel = rawCursor.getString(rawCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.LABEL));
@@ -202,7 +202,7 @@ public class ContactPickerPlugin implements MethodCallHandler, PluginRegistry.Ac
       contact.put("emails", emails);
       contact.put("phones", phones);
       contact.put("addresses", addresses);
-      contact.put("ims", ims);
+      // contact.put("ims", ims);
 
       pendingResult.success(contact);
       pendingResult = null;

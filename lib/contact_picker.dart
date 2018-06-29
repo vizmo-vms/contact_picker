@@ -31,8 +31,9 @@ class Contact {
       this.avatar,
       this.phones,
       this.emails,
-      this.postalAddresses,
-      this.ims});
+      this.postalAddresses
+      // this.ims
+      });
 
   factory Contact.fromMap(Map<dynamic, dynamic> map) => new Contact(
         fullName: map['fullName'],
@@ -51,8 +52,8 @@ class Contact {
         emails: List<Email>.from(
             (map['emails']).map<Email>((dynamic i) => Email.fromMap(i))),
         postalAddresses: List<PostalAddress>.from((map['addresses'])
-            .map<PostalAddress>((dynamic i) => PostalAddress.fromMap(i))),
-        ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
+            .map<PostalAddress>((dynamic i) => PostalAddress.fromMap(i)))
+        // ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
       );
 
   /// Identifer
@@ -98,7 +99,7 @@ class Contact {
   final List<PostalAddress> postalAddresses;
 
   /// The instant messengers of the contact
-  final List<Im> ims;
+  // final List<Im> ims;
 
   @override
   String toString() => '$fullName';
@@ -189,22 +190,22 @@ class Email {
   String toString() => '$email ($label)';
 }
 
-/// Represents a instant messaging endpoint
-class Im {
-  Im({this.value, this.label, this.protocol});
+// /// Represents a instant messaging endpoint
+// class Im {
+//   Im({this.value, this.label, this.protocol});
 
-  factory Im.fromMap(Map<dynamic, dynamic> map) =>
-      new Im(value: map['im'], label: map['label'], protocol: map['protocol']);
+//   factory Im.fromMap(Map<dynamic, dynamic> map) =>
+//       new Im(value: map['im'], label: map['label'], protocol: map['protocol']);
 
-  /// The IM endpoint
-  final String value;
+//   /// The IM endpoint
+//   final String value;
 
-  /// The label associated with the endpoint, e.g. "home" or "work".
-  final String label;
+//   /// The label associated with the endpoint, e.g. "home" or "work".
+//   final String label;
 
-  /// The IM protocol, e.g. Skype, Hangouts ...
-  final String protocol;
+//   /// The IM protocol, e.g. Skype, Hangouts ...
+//   final String protocol;
 
-  @override
-  String toString() => '$value $protocol ($label)';
-}
+//   @override
+//   String toString() => '$value $protocol ($label)';
+// }
