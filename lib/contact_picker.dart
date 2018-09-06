@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'package:flutter/services.dart';
-import 'dart:convert';
 
 class ContactPicker {
   static const MethodChannel _channel = const MethodChannel('contact_picker');

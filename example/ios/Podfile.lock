@@ -6,23 +6,23 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - contact_picker (from `Pods/.symlinks/plugins/contact_picker/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios`)
-  - simple_permissions (from `Pods/.symlinks/plugins/simple_permissions-0.1.5/ios`)
+  - contact_picker (from `.symlinks/plugins/contact_picker/ios`)
+  - Flutter (from `.symlinks/flutter/ios-release`)
+  - simple_permissions (from `.symlinks/plugins/simple_permissions/ios`)
 
 EXTERNAL SOURCES:
   contact_picker:
-    :path: Pods/.symlinks/plugins/contact_picker/ios
+    :path: ".symlinks/plugins/contact_picker/ios"
   Flutter:
-    :path: Pods/.symlinks/flutter/ios
+    :path: ".symlinks/flutter/ios-release"
   simple_permissions:
-    :path: Pods/.symlinks/plugins/simple_permissions-0.1.5/ios
+    :path: ".symlinks/plugins/simple_permissions/ios"
 
 SPEC CHECKSUMS:
   contact_picker: e5ff7027200ed490ac2b58a2338f81f79b05fe4f
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  simple_permissions: b5bfb4ee9bfbf3ea1c0681070e642bc3beb5374d
+  simple_permissions: 7b655133eecb5dd18d5f0326e847c46f8d440576
 
-PODFILE CHECKSUM: 5019db095c156550b8583d12ad0b0e1febbf4bb3
+PODFILE CHECKSUM: 9c6aafc5df40cc10213abaed8c205ed32bb54f95
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
