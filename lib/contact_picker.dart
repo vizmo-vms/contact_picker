@@ -10,8 +10,10 @@ class ContactPicker {
     final Map<dynamic, dynamic> result =
         await _channel.invokeMethod('selectContact');
     if (result == null) {
+      print('No selected contact');
       return null;
     }
+    print('Selected contact: $result');
     return new Contact.fromMap(result);
   }
 }

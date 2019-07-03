@@ -43,11 +43,14 @@
 }
 
 - (void)contactPicker:(CNContactPickerViewController *)picker didSelectContact:(CNContact *)contact {
-    NSLog(@"Selected contact: %@", contact);
+    NSLog(@"No selected contact:");
     
     if(!contact) {
+        _result(nil);
         _result = nil;
     }
+    
+    NSLog(@"Selected contact: %@", contact);
     
   NSString *fullName = [CNContactFormatter stringFromContact:contact
                                                        style:CNContactFormatterStyleFullName];
