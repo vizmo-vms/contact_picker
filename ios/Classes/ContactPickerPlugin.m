@@ -43,6 +43,12 @@
 }
 
 - (void)contactPicker:(CNContactPickerViewController *)picker didSelectContact:(CNContact *)contact {
+    NSLog(@"Selected contact: %@", contact);
+    
+    if(!contact) {
+        _result = nil;
+    }
+    
   NSString *fullName = [CNContactFormatter stringFromContact:contact
                                                        style:CNContactFormatterStyleFullName];
   NSString * identifier =  contact.identifier;
@@ -108,8 +114,6 @@
 
   _result(@{ @"fullName": fullName, @"identifier": identifier, @"displayName": displayName, @"givenName": givenName, @"middleName": middleName, @"familyName": familyName, @"prefix": prefix, @"suffix": suffix, @"company": company, @"jobTitle": jobTitle, @"emails": emails, @"phones": phones, @"addresses": addresses });
   _result = nil;
-
-  NSLog(@"contact: %@", contact);
 }
 
 - (void)contactPickerDidCancel:(CNContactPickerViewController *)picker {
