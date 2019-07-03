@@ -71,12 +71,12 @@
   NSMutableArray *ims = [NSMutableArray array];
 
   for (CNLabeledValue<NSString*> * email in contact.emailAddresses) {
-    [emails addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: email.label],
+      [emails addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: email.label ?: @""],
                          @"email": email.value }];
   }
 
   for (CNLabeledValue<CNPhoneNumber*> * phone in contact.phoneNumbers) {
-    [phones addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: phone.label],
+      [phones addObject:@{ @"label": [CNLabeledValue localizedStringForLabel: phone.label ?: @""],
                          @"phone": phone.value.stringValue }];
   }
 
