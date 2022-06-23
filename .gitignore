@@ -9,3 +9,7 @@ build/
 ios/.generated/
 packages
 pubspec.lock
+.history
+.fvm/flutter_sdk
+example/.flutter-plugins-dependencies
+example/ios/Flutter/flutter_export_environment.sh

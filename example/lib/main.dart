@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final ContactPicker _contactPicker = new ContactPicker();
-  Contact _contact;
+  Contact? _contact;
 
   bool _hasPermissions = false;
 
@@ -60,11 +60,11 @@ class _MyAppState extends State<MyApp> {
       String _cell = "";
       String _office = "";
       for (PhoneNumber item in c.phones) {
-        if (item.label.contains('home')) {
+        if (item.label?.contains('home') ?? false) {
           _home = item.number.toString();
-        } else if (item.label.contains('mobile')) {
+        } else if (item.label?.contains('mobile') ?? false) {
           _cell = item.number.toString();
-        } else if (item.label.contains('work')) {
+        } else if (item.label?.contains('work') ?? false) {
           _office = item.number.toString();
         } else {
           _cell = item.number.toString();
@@ -94,57 +94,60 @@ class _MyAppState extends State<MyApp> {
         _zip = c.postalAddresses.first.postcode.toString();
         print("Address: $_street $_city, $_state $_zip\n");
       }
-      
     } else {
       print("No Contact Selected");
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: new Center(
-          child: new Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              !_hasPermissions
-                  ? new RaisedButton(
-                      child: const Text("Request permissions"),
-                      onPressed: _requestPermissions,
-                      color: Colors.amber,
-                    )
-                  : new Container(),
-              new Container(
-                height: 20.0,
-              ),
-              new RaisedButton(
-                child: const Text(
-                  "Select Contact",
-                  style: const TextStyle(color: Colors.white),
+  Widget build(BuildContext context) => new MaterialApp(
+        home: new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: new Center(
+            child: new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                !_hasPermissions
+                    ? new RaisedButton(
+                        child: const Text("Request permissions"),
+                        onPressed: _requestPermissions,
+                        color: Colors.amber,
+                      )
+                    : new Container(),
+                new Container(
+                  height: 20.0,
                 ),
-                onPressed: () async {
-                  final Contact contact = await _contactPicker.selectContact();
-                  setState(() {
+                new RaisedButton(
+                  child: const Text(
+                    "Select Contact",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    final Contact? contact =
+                        await _contactPicker.selectContact();
                     _contact = contact;
-                    _updateContactInfo(_contact);
-                  });
-                },
-                color: Colors.blue,
-              ),
-              new Container(
-                height: 20.0,
-              ),
-              new Text(
-                _contact == null ? 'No contact selected.' : _contact.toString(),
-              ),
-            ],
+                    if (_contact == null) {
+                      return;
+                    }
+                    setState(() {
+                      _updateContactInfo(_contact!);
+                    });
+                  },
+                  color: Colors.blue,
+                ),
+                new Container(
+                  height: 20.0,
+                ),
+                new Text(
+                  _contact == null
+                      ? 'No contact selected.'
+                      : _contact.toString(),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

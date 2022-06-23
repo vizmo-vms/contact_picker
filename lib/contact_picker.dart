@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 class ContactPicker {
   static const MethodChannel _channel = const MethodChannel('contact_picker');
 
-  Future<Contact> selectContact() async {
-    final Map<dynamic, dynamic> result =
-        await _channel.invokeMethod('selectContact');
+  Future<Contact?> selectContact() async {
+    final Map<dynamic, dynamic>? result =
+        await _channel.invokeMethod<Map<dynamic, dynamic>>('selectContact');
     if (result == null) {
       print('No selected contact');
       return null;
@@ -19,77 +19,77 @@ class ContactPicker {
 }
 
 class Contact {
-  Contact(
-      {this.fullName,
-      this.identifier,
-      this.displayName,
-      this.givenName,
-      this.middleName,
-      this.familyName,
-      this.prefix,
-      this.suffix,
-      this.company,
-      this.jobTitle,
-      this.avatar,
-      this.phones,
-      this.emails,
-      this.postalAddresses
-      // this.ims
-      });
+  Contact({
+    this.fullName,
+    this.identifier,
+    this.displayName,
+    this.givenName,
+    this.middleName,
+    this.familyName,
+    this.prefix,
+    this.suffix,
+    this.company,
+    this.jobTitle,
+    this.avatar,
+    this.phones: const <PhoneNumber>[],
+    this.emails: const <Email>[],
+    this.postalAddresses: const <PostalAddress>[],
+    // this.ims
+  });
 
   factory Contact.fromMap(Map<dynamic, dynamic> map) => new Contact(
-        fullName: map['fullName'],
-        identifier: map['identifier'],
-        displayName: map['displayName'],
-        givenName: map['givenName'],
-        middleName: map['middleName'],
-        familyName: map['familyName'],
-        prefix: map['prefix'],
-        suffix: map['suffix'],
-        company: map['company'],
-        jobTitle: map['jobTitle'],
-        avatar: map['avatar'],
-        phones: List<PhoneNumber>.from((map['phones'])
-            .map<PhoneNumber>((dynamic i) => PhoneNumber.fromMap(i))),
-        emails: List<Email>.from(
-            (map['emails']).map<Email>((dynamic i) => Email.fromMap(i))),
-        postalAddresses: List<PostalAddress>.from((map['addresses'])
-            .map<PostalAddress>((dynamic i) => PostalAddress.fromMap(i)))
-        // ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
+      fullName: map['fullName'],
+      identifier: map['identifier'],
+      displayName: map['displayName'],
+      givenName: map['givenName'],
+      middleName: map['middleName'],
+      familyName: map['familyName'],
+      prefix: map['prefix'],
+      suffix: map['suffix'],
+      company: map['company'],
+      jobTitle: map['jobTitle'],
+      avatar: map['avatar'],
+      phones: List<PhoneNumber>.from((map['phones'])
+          .map<PhoneNumber>((dynamic i) => PhoneNumber.fromMap(i))),
+      emails: List<Email>.from(
+          (map['emails']).map<Email>((dynamic i) => Email.fromMap(i))),
+      postalAddresses: List<PostalAddress>.from((map['addresses'])
+          .map<PostalAddress>((dynamic i) => PostalAddress.fromMap(i)))
+      // ims: List<Im>.from((map['ims']).map<Im>((dynamic i) => Im.fromMap(i))),
       );
 
   /// Identifer
-  final String identifier;
+  final String? identifier;
 
   /// Name for Contact
-  final String displayName;
+  final String? displayName;
 
   /// First Name
-  final String givenName;
+  final String? givenName;
 
   /// Middle Name
-  final String middleName;
+  final String? middleName;
 
   /// Mr. Mrs. Ms. Miss. Dr.
-  final String prefix;
+  final String? prefix;
 
   /// Sr. Jr. M.D.
-  final String suffix;
+  final String? suffix;
 
   /// Last Name
-  final String familyName;
+  final String? familyName;
 
   /// Company
-  final String company;
+  final String? company;
 
   /// Job Title
-  final String jobTitle;
+  final String? jobTitle;
 
   /// Avatar of Contact
-  final Uint8List avatar;
+  final Uint8List? avatar;
 
   /// The full name of the contact, e.g. "Dr. Daniel Higgens Jr.".
-  final String fullName;
+  final String? fullName;
 
   /// The phone numbers of the contact.
   final List<PhoneNumber> phones;
@@ -131,28 +131,28 @@ class PostalAddress {
   // String pobox, neighborhood, label, street, city, postcode, region, country;
 
   /// Address
-  final String pobox;
+  final String? pobox;
 
   /// The label associated with the phone number, e.g. "home" or "work".
-  final String label;
+  final String? label;
 
   /// Address
-  final String neighborhood;
+  final String? neighborhood;
 
   /// Address
-  final String street;
+  final String? street;
 
   /// Address
-  final String city;
+  final String? city;
 
   /// Address
-  final String postcode;
+  final String? postcode;
 
   /// Address
-  final String region;
+  final String? region;
 
   /// Address
-  final String country;
+  final String? country;
 
   @override
   String toString() => '$street $city $region $postcode ($label)';
@@ -166,10 +166,10 @@ class PhoneNumber {
       new PhoneNumber(number: map['phone'], label: map['label']);
 
   /// The formatted phone number, e.g. "+1 (555) 555-5555"
-  final String number;
+  final String? number;
 
   /// The label associated with the phone number, e.g. "home" or "work".
-  final String label;
+  final String? label;
 
   @override
   String toString() => '$number ($label)';
@@ -183,10 +183,10 @@ class Email {
       new Email(email: map['email'], label: map['label']);
 
   /// The raw email address
-  final String email;
+  final String? email;
 
   /// The label associated with the email, e.g. "home" or "work".
-  final String label;
+  final String? label;
 
   @override
   String toString() => '$email ($label)';
@@ -200,13 +200,13 @@ class Email {
 //       new Im(value: map['im'], label: map['label'], protocol: map['protocol']);
 
 //   /// The IM endpoint
-//   final String value;
+//   final String? value;
 
 //   /// The label associated with the endpoint, e.g. "home" or "work".
-//   final String label;
+//   final String? label;
 
 //   /// The IM protocol, e.g. Skype, Hangouts ...
-//   final String protocol;
+//   final String? protocol;
 
 //   @override
 //   String toString() => '$value $protocol ($label)';
